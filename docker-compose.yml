@@ -1,0 +1,9 @@
+version: "2"
+services:
+  test:
+    build:
+      context: .
+      args:
+        - "USER_ID"      
+    volumes:
+      - './reports:/app/build/reports'
