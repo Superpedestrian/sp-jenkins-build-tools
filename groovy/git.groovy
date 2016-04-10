@@ -1,4 +1,9 @@
 /**
+ * git.groovy
+ * Git functions, i.e. tag or any other complex interaction
+ */
+
+/**
  * Tag the git repo at the current HEAD with the given label
  *
  * @param label Git tag to create, i.e. 0.3.0

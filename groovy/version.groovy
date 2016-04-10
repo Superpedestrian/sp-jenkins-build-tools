@@ -1,4 +1,9 @@
 /**
+ * version.groovy
+ * Functions for parsing the version out of a project.
+ */
+
+/**
  * Get version string from package.json for node projects
  */
 @SuppressWarnings(['NoDef', 'DuplicateListLiteral', 'DuplicateStringLiteral'])
