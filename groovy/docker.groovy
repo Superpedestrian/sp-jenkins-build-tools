@@ -1,4 +1,9 @@
 /**
+ * docker.groovy
+ * Functions for building and publishing docker containers
+ */
+
+/**
  * Build a docker image, tag it, and push to docker hub
  *
  * @param repo Dockerhub repository

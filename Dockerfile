@@ -13,4 +13,4 @@ USER sp
 
 WORKDIR /app
 RUN ./gradlew tasks
-CMD bash -c 'set -e; shellcheck -s bash shell/* && ./gradlew check'
+CMD bash -c 'set -e; shellcheck -s bash shell/* && ./gradlew check groovydoc'

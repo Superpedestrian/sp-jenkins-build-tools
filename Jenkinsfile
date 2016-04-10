@@ -3,13 +3,19 @@
 node {
     stage 'Clean and Checkout'
     checkout scm
+    // Clear and make volume mounted folders so they
+    // have the right permissions
+    sh "rm -rf reports docs && mkdir -p reports docs"
 
-    // Make report folder so it doesn't get root owned
-    sh 'rm -rf reports && mkdir -p reports'
-    def docker = load 'groovy/docker.groovy'
+    Object docker = load 'groovy/docker.groovy'
     docker.dockerComposeBuild(true)
 
     stage 'Run tests'
-    sh 'docker-compose run test'
-    archive 'reports/'
+    try {
+      sh 'docker-compose run test'
+    } catch (e) {
+      archive 'reports/'
+      throw e
+    }
+    archive 'docs/groovydoc/'
 }

@@ -7,3 +7,4 @@ services:
         - "USER_ID"      
     volumes:
       - './reports:/app/build/reports'
+      - './docs:/app/build/docs'

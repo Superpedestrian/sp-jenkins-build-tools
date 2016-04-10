@@ -1,3 +1,8 @@
+/**
+ * deploy.groovy
+ * Functions for elastic beanstalk or other deployment tasks
+ */
+
 KEY_ID_VAR = 'AWS_ACCESS_KEY_ID'
 KEY_SECRET_VAR = 'AWS_SECRET_ACCESS_KEY'
 SECRET_BINDING_CLASS = 'UsernamePasswordMultiBinding'
@@ -48,7 +53,7 @@ void ebDeploy(
 }
 
 /**
- * Deploy new version to an Elastic Beanstalk multi docker environment
+ * Swap Elastic Beanstalk URLs
  *
  * @param app Elastic Beanstalk application
  * @param environment to issue URL swap to within @app
