@@ -27,7 +27,7 @@ void dockerTagPush(repo, base, tag='latest', org='superpedestrian') {
  * Use docker-compose to set USER_ID and build all containers
  *
  */
-void dockerComposeBuild(useCache=True) {
+void dockerComposeBuild(useCache=true) {
   stage 'Build Docker Image'
     // See https://issues.jenkins-ci.org/browse/JENKINS-26133 for
     // why I have to do this
