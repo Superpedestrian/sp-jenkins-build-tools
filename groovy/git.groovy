@@ -14,18 +14,19 @@
  * @param credentialFileId Jenkins credential plugin ID for Git
      credential file to use (https://git-scm.com/docs/git-credential-store)
  */
+@SuppressWarnings(['ParameterCount'])
 void gitTag(
   label,
-  message = 'Release'
+  message = 'Release',
   name = 'build.internal.superpedestrian.com',
-  email = 'dev-ops@superpedestrian.com'
+  email = 'dev-ops@superpedestrian.com',
   credentialUsername = 'sp-devops',
   credentialFileId = 'sp-devops-github-creds'
 ) {
   echo "Tagging version ${label}"
   sh "git config --local user.name ${name}"
   sh "git config --local user.email ${email}"
-  sh "git tag -f -a v${label} -m '${message}'"
+  sh "git tag -f -a ${label} -m '${message}'"
   sh "git config --local credential.username ${credentialUsername}"
   withCredentials(
     [[
