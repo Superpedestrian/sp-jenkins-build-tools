@@ -1,0 +1,76 @@
+#!/bin/bash
+# Creates a directory with the one file required to run the
+# project on EB as a multi docker container project, and sets up eb
+# and deploys the project.
+#
+# Requires python virtualenvwrapper to deal with
+# potential dependency issues with awsebcli
+#
+# Required environment variables:
+# EB_APP: ElasticBeanstalk application name
+# EB_ENV: ElasticBeanstalk environment name
+# DH_REPO: Dockerhub repo name
+# TAG || BUILD_NUMBER: Tagged image in dockerhub to load to EB
+set -e
+TAG=${TAG:-$BUILD_NUMBER}
+APP_RAM=${APP_RAM:-512}
+CONTAINER_PORT=${CONTAINER_PORT:-8095}
+
+for var in EB_APP EB_ENV DH_REPO DH_ORG TAG; do
+    if [ -z "${!var}" ]; then
+       echo "$var is not set"
+       exit 1
+    fi
+done
+
+my_dir="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+. "$my_dir/common"
+
+# shellcheck disable=SC2119
+setup_eb
+
+cat <<EOF > Dockerrun.aws.json
+{
+  "AWSEBDockerrunVersion": 2,
+  "volumes": [],
+  "Authentication": {
+    "Bucket": "docker-private-cfg",
+    "Key": "index.docker.io"
+  },
+  "containerDefinitions": [
+    {
+      "name": "${DH_REPO}-app",
+      "image": "$DH_ORG/$DH_REPO:$TAG",
+      "essential": true,
+      "memory": $APP_RAM,
+      "mountPoints": [
+        {
+          "sourceVolume": "awseb-logs-${DH_REPO}-app",
+          "containerPath": "/var/log/"
+        }
+      ],
+      "portMappings": [
+        {
+          "hostPort": 80,
+          "containerPort": $CONTAINER_PORT
+        }
+      ]
+    }
+  ]
+}
+EOF
+zip eb.zip Dockerrun.aws.json
+
+install_eb
+
+# Deploy
+# shellcheck disable=SC2086
+eb use $EB_ENV
+# shellcheck disable=SC2086
+eb upgrade $EB_ENV --force
+eb deploy -l "Jenkins-$BUILD_NUMBER-$TAG"
+
+# Cleanup
+cd ..
+rm -r tmp/
+deactivate

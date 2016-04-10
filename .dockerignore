@@ -1,0 +1,4 @@
+build/*
+Jenkinsfile
+docker-compose.yml
+reports/

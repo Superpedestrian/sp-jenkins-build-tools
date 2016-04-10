@@ -1,0 +1,21 @@
+// File: build.gradle
+['groovy', 'codenarc'].each { 
+    apply plugin: it 
+}
+sourceSets {
+    main {
+        groovy {
+            srcDirs = ['groovy']
+        }
+    }
+}
+codenarcMain {
+    configFile = rootProject.file("codenarc.rules.groovy")
+}
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    compile 'org.codehaus.groovy:groovy-all:2.4.4'
+}

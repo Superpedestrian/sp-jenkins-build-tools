@@ -1,0 +1,36 @@
+#!/bin/bash
+
+# Common functions needed for eb scripts
+
+function setup_eb() {
+    DIR=${1:-tmp}
+    rm -r "$DIR" || true
+    mkdir -p "$DIR/.elasticbeanstalk"
+    cd "$DIR"
+
+    cat <<EOF > .elasticbeanstalk/config.yml
+branch-defaults:
+  default:
+    environment: $EB_ENV
+deploy:
+  artifact: eb.zip
+global:
+  application_name: $EB_APP
+  default_region: us-east-1
+EOF
+
+}
+
+
+function install_eb() {
+    # Setup for deployment to EB
+    # shellcheck disable=SC1091
+    . virtualenvwrapper.sh
+
+    # This causes error for an unknown reason
+    set +e
+    mktmpenv -n
+    set -e
+
+    pip install awsebcli
+}

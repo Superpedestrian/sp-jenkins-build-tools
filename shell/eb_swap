@@ -1,0 +1,35 @@
+#!/bin/bash
+# This will swap the production URLs from one environment to another
+set -e
+
+for var in EB_APP EB_ENV EB_ENV_RED EB_ENV_WHITE; do
+    if [ -z "${!var}" ]; then
+       echo "$var is not set"
+       exit 1
+    fi
+done
+
+my_dir="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+
+. "$my_dir/common"
+
+# shellcheck disable=SC2119
+setup_eb
+install_eb
+
+if [[ "$EB_ENV" == "$EB_ENV_WHITE" ]]; then
+    SWAP_ENV="$EB_ENV_RED"
+else
+    SWAP_ENV="$EB_ENV_WHITE"
+fi
+
+# shellcheck disable=SC2086
+eb use $EB_ENV
+
+# shellcheck disable=SC2086
+eb swap $SWAP_ENV
+
+# Cleanup
+cd ..
+rm -r tmp/
+deactivate
