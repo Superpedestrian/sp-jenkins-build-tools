@@ -13,6 +13,7 @@ SECRET_BINDING_CLASS = 'UsernamePasswordMultiBinding'
  * @param app Elastic Beanstalk application
  * @param environment Elastic Beanstalk environment within @app
  * @param ram Memory to give application container
+ * @param tag Dockerhub tag to deploy
  * @param port Port in application container to map to 80
  * @param repo Dockerhub repository
  * @param org Dockerhub organization
@@ -47,7 +48,7 @@ void ebDeploy(
         usernameVariable:KEY_ID_VAR, passwordVariable:KEY_SECRET_VAR
        ]]
     ) {
-      sh 'scripts/eb_deploy'
+      sh 'jenkins_tools/shell/eb_deploy'
     }
   }
 }
@@ -79,7 +80,7 @@ void ebSwap(
         usernameVariable:KEY_ID_VAR, passwordVariable:KEY_SECRET_VAR
        ]]
     ) {
-      sh 'scripts/eb_swap'
+      sh 'jenkinks_tools/shell/eb_swap'
     }
   }
 }
