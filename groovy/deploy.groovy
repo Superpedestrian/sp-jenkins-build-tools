@@ -80,7 +80,7 @@ void ebSwap(
         usernameVariable:KEY_ID_VAR, passwordVariable:KEY_SECRET_VAR
        ]]
     ) {
-      sh 'jenkinks_tools/shell/eb_swap'
+      sh 'jenkins_tools/shell/eb_swap'
     }
   }
 }
