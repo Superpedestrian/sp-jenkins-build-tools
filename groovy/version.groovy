@@ -19,4 +19,12 @@ String pyVersion() {
   matcher ? matcher[0][1] : null
 }
 
+/**
+ * Get version string from build.gradle file specified by gradlePath
+ */
+String androidVersion(gradlePath) {
+  Object matcher = readFile(gradlePath) =~ 'versionName \"(.+)\"'
+  matcher ? matcher[0][1] : null
+}
+
 return this
