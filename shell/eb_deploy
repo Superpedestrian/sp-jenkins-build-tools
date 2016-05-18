@@ -67,7 +67,7 @@ install_eb
 # shellcheck disable=SC2086
 eb use $EB_ENV
 # shellcheck disable=SC2086
-eb upgrade $EB_ENV --force
+eb upgrade $EB_ENV --force --timeout 20
 eb deploy -l "Jenkins-$BUILD_NUMBER-$TAG"
 
 # Cleanup
