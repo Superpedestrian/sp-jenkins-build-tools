@@ -15,6 +15,7 @@ set -e
 TAG=${TAG:-$BUILD_NUMBER}
 APP_RAM=${APP_RAM:-512}
 CONTAINER_PORT=${CONTAINER_PORT:-8095}
+INSTALL_EXTENSIONS=${INSTALL_EXTENSIONS:-false}
 
 for var in EB_APP EB_ENV DH_REPO DH_ORG TAG; do
     if [ -z "${!var}" ]; then
@@ -59,7 +60,17 @@ cat <<EOF > Dockerrun.aws.json
   ]
 }
 EOF
-zip eb.zip Dockerrun.aws.json
+
+# Create eb extensions
+if [ "$INSTALL_EXTENSIONS" == "true" ]; then
+    rm -r ".ebextensions" || true
+    mkdir ".ebextensions"
+    for file in $my_dir/*extension.sh; do
+        . "$file"
+    done
+fi
+
+zip -r eb.zip ./
 
 install_eb
 
