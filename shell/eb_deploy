@@ -65,9 +65,13 @@ EOF
 if [ "$INSTALL_EXTENSIONS" == "true" ]; then
     rm -r ".ebextensions" || true
     mkdir ".ebextensions"
+    # Set IFS to support spaced file names
+    savedifs=$IFS
+    IFS=$(echo -en "\n\b")
     for file in $my_dir/*extension.sh; do
         . "$file"
     done
+    IFS=$savedifs
 fi
 
 zip -r eb.zip ./
