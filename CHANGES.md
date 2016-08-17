@@ -1,5 +1,9 @@
 # Changes
 
+## 0.6.1
+
+- Removed deprecated -f argument docker tag
+
 ## 0.6.0
 
 - Added windows support for git version tagging
