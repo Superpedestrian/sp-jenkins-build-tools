@@ -19,7 +19,7 @@ void dockerTagPush(repo, base, tag='latest', org='superpedestrian') {
   sh "docker push ${org}/${repo}:${base}"
 
   stage "Tag and push to dockerhub with ${tag}"
-  sh "docker tag -f ${org}/${repo}:${base} ${org}/${repo}:${tag}"
+  sh "docker tag ${org}/${repo}:${base} ${org}/${repo}:${tag}"
   sh "docker push ${org}/${repo}:${tag}"
 }
 
