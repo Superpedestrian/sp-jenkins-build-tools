@@ -1,0 +1,32 @@
+#!/bin/bash
+# This will swap the production URLs from one environment to another
+#
+# Required environment variables:
+# EB_APP: ElasticBeanstalk application name
+# EB_ENV_SRC: Environment to clone
+# EB_ENV_DST: Name of cloned environment
+# EB_ENV_CNAME: CNAME to use for new environment
+set -e
+
+for var in EB_APP EB_ENV_SRC EB_ENV_DST EB_ENV_CNAME; do
+    if [ -z "${!var}" ]; then
+       echo "$var is not set"
+       exit 1
+    fi
+done
+
+my_dir="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+
+. "$my_dir/common"
+
+# shellcheck disable=SC2119
+setup_eb
+install_eb
+
+# shellcheck disable=SC2086
+eb clone $EB_ENV_SRC -n $EB_ENV_DST -c  $EB_ENV_CNAME --timeout 20
+
+# Cleanup
+cd ..
+rm -r tmp/
+deactivate
