@@ -1,5 +1,11 @@
 # Changes
 
+## 0.7.0
+
+- Added command for finding active EB environment by CNAME
+- Added command for cloning an EB environment
+- Added command for terminating an EB environment
+
 ## 0.6.1
 
 - Removed deprecated -f argument docker tag

@@ -26,6 +26,38 @@ LOGSTASH_KEYS = [
 ]
 
 /**
+ * Clone an Elastic Beanstalk environment
+ *
+ * @param app Elastic Beanstalk application
+ * @param environmentSource Environment to clone
+ * @param environmentDst Environment to create from clone
+ * @param environmentCNAME CNAME for new environment
+ * @param credentialId Jenkins credential plugin ID that has AWS credentials
+     as username/password type
+ */
+void ebClone(
+  app, environmentSource, environmentDestination, environmentCNAME, credentialsId='aws-eb-creds'
+) {
+  stage "Cloning Elastic Beanstalk Environment from ${environmentSource} to ${environmentDestination}"
+  withEnv(
+    [
+      "EB_APP=${app}",
+      "EB_ENV_SRC=${environmentSource}",
+      "EB_ENV_DST=${environmentDestination}",
+      "EB_ENV_CNAME=${environmentCNAME}"
+    ]
+  ) {
+    withCredentials(
+      [[$class:SECRET_BINDING_CLASS, credentialsId:credentialsId,
+        usernameVariable:KEY_ID_VAR, passwordVariable:KEY_SECRET_VAR
+       ]]
+    ) {
+      sh 'jenkins_tools/shell/eb_clone'
+    }
+  }
+}
+
+/**
  * Deploy new version to an Elastic Beanstalk multi docker environment
  *
  * @param app Elastic Beanstalk application
@@ -55,7 +87,7 @@ void ebDeploy(
   installExtensions='false',
   logstashKeys=null
 ) {
-  stage 'Push to Elastic Beanstalk'
+  stage "Push to Elastic Beanstalk (${environment})"
   withEnv(
     [
       "TAG=${tag}",
@@ -89,6 +121,37 @@ void ebDeploy(
 }
 
 /**
+ * Get Active Environment
+ *
+ * @param app Elastic Beanstalk application
+ * @param cname production CNAME start string
+ * @param envFile File name/path to use to store the active environment name.
+ * @param credentialId Jenkins credential plugin ID that has AWS credentials
+     as username/password type
+ */
+String ebGetActiveEnv(app, cname, envFile='EB_ACTIVE_ENV', credentialsId='aws-eb-creds') {
+  stage 'Get active Elastic Beanstalk environment'
+  withEnv(
+    [
+      "EB_APP=${app}",
+      "EB_CNAME=${cname}",
+      "EB_ACTIVE_ENV_FILE=${envFile}"
+    ]
+  ) {
+    withCredentials(
+      [[$class:SECRET_BINDING_CLASS, credentialsId:credentialsId,
+        usernameVariable:KEY_ID_VAR, passwordVariable:KEY_SECRET_VAR
+       ]]
+    ) {
+      sh 'jenkins_tools/shell/eb_get_env'
+    }
+  }
+  String activeEnv = readFile(envFile)
+  sh "rm ${envFile}"
+  return activeEnv
+}
+
+/**
  * Swap Elastic Beanstalk URLs
  *
  * @param app Elastic Beanstalk application
@@ -116,6 +179,34 @@ void ebSwap(
        ]]
     ) {
       sh 'jenkins_tools/shell/eb_swap'
+    }
+  }
+}
+
+/**
+ * Terminate an Elastic Beanstalk environment
+ *
+ * @param app Elastic Beanstalk application
+ * @param environment to terminate
+ * @param credentialId Jenkins credential plugin ID that has AWS credentials
+     as username/password type
+ */
+void ebTerminate(
+  app, environment, credentialsId='aws-eb-creds'
+) {
+  stage "Terminating ${environment}"
+  withEnv(
+    [
+      "EB_APP=${app}",
+      "EB_ENV=${environment}"
+    ]
+  ) {
+    withCredentials(
+      [[$class:SECRET_BINDING_CLASS, credentialsId:credentialsId,
+        usernameVariable:KEY_ID_VAR, passwordVariable:KEY_SECRET_VAR
+       ]]
+    ) {
+      sh 'jenkins_tools/shell/eb_terminate'
     }
   }
 }

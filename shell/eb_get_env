@@ -1,0 +1,49 @@
+#!/bin/bash
+# This will write the given Elastic Beanstalk's current environment
+# based on production CNAME, to a file optionally specified
+#
+# Required environment variables:
+# EB_APP: ElasticBeanstalk application name
+# EB_CNAME: Start of production CNAME, i.e. myapp-white
+#
+# Optional Environment variables:
+# ACTIVE_ENV_FILE: Path to file to write active environment variable to,
+#     defaults to ACTIVE_ENV in cwd.
+set -e
+
+EB_ACTIVE_ENV_FILE=${EB_ACTIVE_ENV_FILE:-EB_ACTIVE_ENV}
+
+for var in EB_APP EB_CNAME; do
+    if [ -z "${!var}" ]; then
+       echo "$var is not set"
+       exit 1
+    fi
+done
+
+my_dir="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+
+. "$my_dir/common"
+
+# shellcheck disable=SC2119
+setup_eb
+install_eb
+
+for env in $(eb list | sed 's/\* //g'); do
+    # shellcheck disable=SC2086
+    current_cname="$(eb status $env | grep CNAME | sed 's/ *CNAME: *//')"
+    if [[ "$current_cname" == "$EB_CNAME"* ]]; then
+        eb_env="$env"
+    fi
+done
+
+if [ -z "$eb_env" ]; then
+    echo "Could not find active environment"
+    exit 1
+fi
+
+cd ..
+echo -n "$eb_env" > "$EB_ACTIVE_ENV_FILE"
+
+# Cleanup
+rm -r tmp/
+deactivate
