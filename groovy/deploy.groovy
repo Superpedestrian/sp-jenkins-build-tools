@@ -73,6 +73,9 @@ void ebClone(
      installed
  * @param logstashKeys List of credentials instantiations to provide
      logstash SSL credentials for that extension
+ * @param autoScaleUseELB string to determine if you should use ELB to do
+     AutoScale health checks. if "false" it will use the default EC2
+     health check instead.
  */
 @SuppressWarnings(['ParameterCount'])
 void ebDeploy(
@@ -85,7 +88,8 @@ void ebDeploy(
   org='superpedestrian',
   credentialId='aws-eb-creds',
   installExtensions='false',
-  logstashKeys=null
+  logstashKeys=null,
+  autoScaleUseELB='false'
 ) {
   stage "Push to Elastic Beanstalk (${environment})"
   withEnv(
@@ -97,7 +101,8 @@ void ebDeploy(
       "EB_ENV=${environment}",
       "DH_REPO=${repo}",
       "DH_ORG=${org}",
-      "INSTALL_EXTENSIONS=${installExtensions}"
+      "INSTALL_EXTENSIONS=${installExtensions}",
+      "AUTO_SCALE_USE_ELB=${autoScaleUseELB}"
     ]
   ) {
     DEPLOY_SCRIPT = 'jenkins_tools/shell/eb_deploy'
