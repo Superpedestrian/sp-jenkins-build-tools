@@ -23,7 +23,7 @@ indent_cert() {
 for var in LOGSTASH_CLIENT_KEY LOGSTASH_CLIENT_CERT LOGSTASH_CA_CERT; do
     if [ -z "${!var}" ]; then
        echo "$var is not set, not running filebeat extension"
-       exit 0
+       exit 1
     fi
 done
 
