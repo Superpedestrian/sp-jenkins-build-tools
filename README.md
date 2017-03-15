@@ -42,26 +42,28 @@ to your repo and `git add jenkins_tools` and commit that.
 
 
 node {
-  stage 'Clean and Checkout'
-  checkout scm
-  sh 'git submodule init && git submodule update --recursive'
-  sh 'git clean -xdf'
+  stage('Clean and Checkout') {
+    checkout scm
+    sh 'git submodule init && git submodule update --recursive'
+    sh 'git clean -xdf'
 
-  // Import all of our library classes
-  docker = load 'jenkins_tools/groovy/docker.groovy'
-  deploy = load 'jenkins_tools/groovy/deploy.groovy'
-  version = load 'jenkins_tools/groovy/version.groovy'
-  git = load 'jenkins_tools/groovy/git.groovy'
+    // Import all of our library classes
+    docker = load 'jenkins_tools/groovy/docker.groovy'
+    deploy = load 'jenkins_tools/groovy/deploy.groovy'
+    version = load 'jenkins_tools/groovy/version.groovy'
+    git = load 'jenkins_tools/groovy/git.groovy'
 
 
-  Object docker = load 'jenkins_tools/groovy/docker.groovy'
-  docker.dockerComposeBuild true
+    Object docker = load 'jenkins_tools/groovy/docker.groovy'
+    docker.dockerComposeBuild true
 
-  stage 'Run tests and coverage'
-  // Make coverage folder so it doesn't get root owned
-  sh 'rm -rf coverage && mkdir -p coverage'
-  sh 'docker-compose run web gulp test'
-  archive 'coverage/'
+    stage('Run tests and coverage') {
+      // Make coverage folder so it doesn't get root owned
+      sh 'rm -rf coverage && mkdir -p coverage'
+      sh 'docker-compose run web gulp test'
+      archive 'coverage/'
+    }
+  }
 }
 
 String repo = 'my-github-repo'
@@ -94,13 +96,14 @@ if (env.BRANCH_NAME == 'release') {
     ver = version.npmVersion()
   }
 
-  stage 'Prompt for release build/tagging'
-  input "Proceed with tagging of ${ver}?"
+  stage('Prompt for release build/tagging') {
+    input "Proceed with tagging of ${ver}?"
+  }
 
-  stage 'Tag git repo with new version'
-  currentBuild.displayName = ver
-  currentBuild.description = "Release ${ver} build ${env.BUILD_NUMBER}"
-
+  stage('Tag git repo with new version') {
+    currentBuild.displayName = ver
+    currentBuild.description = "Release ${ver} build ${env.BUILD_NUMBER}"
+  }
   node {
     git.gitTag ver, "Release ${ver}"
     docker.dockerTagPush repo, 'release', ver
@@ -134,20 +137,22 @@ if (env.BRANCH_NAME == 'release') {
     )
   }
 
-  stage 'QA Environment and Swap URLs'
-  input "Ready to promote https://${my-prod-cname}.example.com ?"
-  node {
-    deploy.ebSwap(
-      app,
-      newEnv,
-      'my-a-env',
-      'my-b-env'
-    )
+  stage('QA Environment and Swap URLs') {
+    input "Ready to promote https://${my-prod-cname}.example.com ?"
+    node {
+      deploy.ebSwap(
+        app,
+        newEnv,
+        'my-a-env',
+        'my-b-env'
+      )
+    }
   }
-  stage 'Terminate Old Environment'
-  input "Ready to terminate old environment ${activeEnv} ?"
-  node {
-    deploy.ebTerminate(app, activeEnv)
+  stage('Terminate Old Environment') {
+    input "Ready to terminate old environment ${activeEnv} ?"
+    node {
+      deploy.ebTerminate(app, activeEnv)
+    }
   }
 }
 ```
