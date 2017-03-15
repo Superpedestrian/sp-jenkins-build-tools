@@ -1,5 +1,9 @@
 # Changes
 
+## 0.8.0
+
+- Added support for using ELB health checks for autoscaling instead of EC2
+
 ## 0.7.0
 
 - Added command for finding active EB environment by CNAME
