@@ -2,8 +2,7 @@
 
 ## 0.8.1
 
-- Changed timout to 10 minutes to allow for docker container
-  builds/downloads causing infinite downtime.
+- Changed ELB healtcheck timeout to 10 minutes to prevent infinite downtime
 
 ## 0.8.0
 
