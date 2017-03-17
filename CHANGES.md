@@ -1,5 +1,10 @@
 # Changes
 
+## 0.9.0
+
+- Added a DEBUG environment flag to help with shell script/environment issues
+- Corrected double deployment bug when using extensions
+
 ## 0.8.1
 
 - Changed ELB healtcheck timeout to 10 minutes to prevent infinite downtime
