@@ -1,5 +1,9 @@
 # Changes
 
+## 0.8.1
+
+- Changed ELB healtcheck timeout to 10 minutes to prevent infinite downtime
+
 ## 0.8.0
 
 - Added support for using ELB health checks for autoscaling instead of EC2
