@@ -2,16 +2,16 @@
 # This will swap the production URLs from one environment to another
 set -e
 
+my_dir="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+
+. "$my_dir/common"
+
 for var in EB_APP EB_ENV EB_ENV_RED EB_ENV_WHITE; do
     if [ -z "${!var}" ]; then
        echo "$var is not set"
        exit 1
     fi
 done
-
-my_dir="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
-
-. "$my_dir/common"
 
 # shellcheck disable=SC2119
 setup_eb

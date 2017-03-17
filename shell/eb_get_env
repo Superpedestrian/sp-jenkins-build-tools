@@ -10,8 +10,12 @@
 # ACTIVE_ENV_FILE: Path to file to write active environment variable to,
 #     defaults to ACTIVE_ENV in cwd.
 set -e
-
 EB_ACTIVE_ENV_FILE=${EB_ACTIVE_ENV_FILE:-EB_ACTIVE_ENV}
+
+my_dir="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+
+. "$my_dir/common"
+
 
 for var in EB_APP EB_CNAME; do
     if [ -z "${!var}" ]; then
@@ -19,10 +23,6 @@ for var in EB_APP EB_CNAME; do
        exit 1
     fi
 done
-
-my_dir="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
-
-. "$my_dir/common"
 
 # shellcheck disable=SC2119
 setup_eb

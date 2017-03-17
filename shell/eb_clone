@@ -8,16 +8,16 @@
 # EB_ENV_CNAME: CNAME to use for new environment
 set -e
 
+my_dir="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+
+. "$my_dir/common"
+
 for var in EB_APP EB_ENV_SRC EB_ENV_DST EB_ENV_CNAME; do
     if [ -z "${!var}" ]; then
        echo "$var is not set"
        exit 1
     fi
 done
-
-my_dir="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
-
-. "$my_dir/common"
 
 # shellcheck disable=SC2119
 setup_eb
