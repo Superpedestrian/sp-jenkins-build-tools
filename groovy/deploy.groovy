@@ -118,9 +118,10 @@ void ebDeploy(
           sh DEPLOY_SCRIPT
         }
       }
-    }
-    withCredentials(credentials) {
-      sh DEPLOY_SCRIPT
+    } else {
+      withCredentials(credentials) {
+        sh DEPLOY_SCRIPT
+      }
     }
   }
 }
