@@ -2,6 +2,12 @@
 
 # Common functions needed for eb scripts
 
+# Spit out environment if we are in debug
+if [ -n "${DEBUG}" ]; then
+    env
+    set -x
+fi
+
 function setup_eb() {
     DIR=${1:-tmp}
     rm -r "$DIR" || true
