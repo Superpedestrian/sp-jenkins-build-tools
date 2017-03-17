@@ -18,15 +18,15 @@ AUTO_SCALE_USE_ELB=${AUTO_SCALE_USE_ELB:-false}
 CONTAINER_PORT=${CONTAINER_PORT:-8095}
 INSTALL_EXTENSIONS=${INSTALL_EXTENSIONS:-false}
 
+my_dir="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+. "$my_dir/common"
+
 for var in EB_APP EB_ENV DH_REPO DH_ORG TAG; do
     if [ -z "${!var}" ]; then
        echo "$var is not set"
        exit 1
     fi
 done
-
-my_dir="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
-. "$my_dir/common"
 
 # shellcheck disable=SC2119
 setup_eb
