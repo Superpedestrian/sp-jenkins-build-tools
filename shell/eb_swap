@@ -19,15 +19,17 @@ install_eb
 
 if [[ "$EB_ENV" == "$EB_ENV_WHITE" ]]; then
     SWAP_ENV="$EB_ENV_RED"
+    OFFSWAP_ENV="$EB_ENV_WHITE"
 else
     SWAP_ENV="$EB_ENV_WHITE"
+    OFFSWAP_ENV="$EB_ENV_RED"
 fi
 
 # shellcheck disable=SC2086
 eb use $EB_ENV
 
 # shellcheck disable=SC2086
-eb swap $SWAP_ENV
+eb swap $SWAP_ENV --destination_name $OFFSWAP_ENV
 
 # Cleanup
 cd ..
