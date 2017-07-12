@@ -12,6 +12,14 @@ String npmVersion() {
 }
 
 /**
+ * Get version string from composer.json for php projects
+ */
+String composerVersion() {
+  Object matcher = readFile('composer.json') =~ '  "version": \"(.+)\",'
+  matcher ? matcher[0][1] : null
+}
+
+/**
  * Get version string from setup.py for python projects
  */
 String pyVersion() {
