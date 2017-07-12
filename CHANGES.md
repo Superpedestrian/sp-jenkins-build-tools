@@ -1,5 +1,10 @@
 # Changes
 
+## 0.10.0
+
+- Added command for getting composer version
+- Specify env swap for apps that more than 2 environments
+
 ## 0.9.0
 
 - Added a DEBUG environment flag to help with shell script/environment issues
