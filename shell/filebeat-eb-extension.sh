@@ -42,7 +42,7 @@ files:
 
           output:
             logstash:
-              hosts: ["logs.internal.superpedestrian.com:52001"]
+              hosts: ["logstash.internal.superpedestrian.com:52001"]
               tls:
                 certificate_authorities: ["/etc/ssl/certs/logstash-ca.pem"]
                 certificate: "/etc/ssl/certs/logstash-client.pem"
