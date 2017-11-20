@@ -1,5 +1,9 @@
 # Changes
 
+## 0.11.0
+
+- Updated logstash hosts
+
 ## 0.10.0
 
 - Added command for getting composer version
