@@ -39,7 +39,14 @@ files:
               - paths:
                   - "/var/log/containers/*.log"
                 document_type: "$LOGSTASH_DOC_TYPE"
-
+          logging:
+            level: warning
+            to_files: true
+            to_syslog: false
+            files:
+              path: /var/log/beatlog
+              name: beat.log
+              keepfiles: 7
           output:
             logstash:
               hosts: ["logstash.internal.superpedestrian.com:52001"]
