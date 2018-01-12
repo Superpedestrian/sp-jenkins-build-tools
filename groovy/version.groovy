@@ -14,6 +14,7 @@ String npmVersion() {
 /**
  * Get version string from composer.json for php projects
  */
+@SuppressWarnings('DuplicateStringLiteral')
 String composerVersion() {
   Object matcher = readFile('composer.json') =~ '  "version": \"(.+)\",'
   matcher ? matcher[0][1] : null
