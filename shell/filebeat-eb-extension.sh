@@ -61,6 +61,13 @@ filebeat.prospectors:
   fields_under_root: true
 
 - input_type: log
+  paths:
+    - /var/log/containers/*.log
+  fields:
+    document_type: "$LOGSTASH_DOC_TYPE"
+  fields_under_root: true
+
+- input_type: log
   paths: 
     - /var/log/apache*/*
   fields:
@@ -135,7 +142,7 @@ filebeat.prospectors:
 #----------------------------- Logstash output --------------------------------
 output.logstash:
   # The Logstash hosts
-  hosts: ["logs.internal.superpedestrian.com:5044"]
+  hosts: ["logstash.internal.superpedestrian.com:5044"]
 
   # Optional SSL. By default is off.
   # List of root certificates for HTTPS server verifications
