@@ -1,5 +1,9 @@
 # Changes
 
+## 0.12.1
+
+- Fixed filename of filebeat config
+
 ## 0.12.0
 
 - Changed filebeat configuration to match upgraded version
