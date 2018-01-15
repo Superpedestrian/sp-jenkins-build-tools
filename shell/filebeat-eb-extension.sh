@@ -13,7 +13,7 @@
 
 LOGSTASH_DOC_TYPE=${LOGSTASH_DOC_TYPE:-elasticbeanstalk}
 FB_EXTENSION_PATH=${FB_EXTENSION_PATH:-.ebextensions/100-filebeat.config}
-FB_VERSION=${FB_VERSION:-5.6.5}
+FB_VERSION=${FB_VERSION:5.6.5}
 
 indent_cert() {
     # shellcheck disable=SC2001
@@ -194,7 +194,7 @@ commands:
     test: "[ ! -f filebeat-${FB_VERSION}-x86_64.rpm ]"
     cwd: "/home/ec2-user"
   200_command:
-    command: "rpm -ivh --replacepkgs filebeat-${FB_VERSION}-x86_64.rpm && touch /tmp/installed-filebeats"
+    command: "rpm -ivh --replacepkgs --excludepath /etc/filebeat/ filebeat-${FB_VERSION}-x86_64.rpm && touch /tmp/installed-filebeats"
     test: "[ ! -f /tmp/installed-filebeats ]"
     cwd: "/home/ec2-user"
   300_command:
