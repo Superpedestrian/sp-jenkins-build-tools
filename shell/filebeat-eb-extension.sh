@@ -13,7 +13,7 @@
 
 LOGSTASH_DOC_TYPE=${LOGSTASH_DOC_TYPE:-elasticbeanstalk}
 FB_EXTENSION_PATH=${FB_EXTENSION_PATH:-.ebextensions/100-filebeat.config}
-FB_VERSION=${FB_VERSION:5.6.5}
+FB_VERSION=${FB_VERSION:-5.6.5}
 
 indent_cert() {
     # shellcheck disable=SC2001
