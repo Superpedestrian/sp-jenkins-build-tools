@@ -1,5 +1,9 @@
 # Changes
 
+## 0.12.0
+
+- Changed filebeat configuration to match upgraded version
+
 ## 0.11.0
 
 - Updated logstash hosts
