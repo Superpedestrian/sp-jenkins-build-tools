@@ -50,7 +50,6 @@ $(indent_cert "$LOGSTASH_CLIENT_KEY")
 commands:
   100_command:
     command: "rm -rf /etc/filebeat"
-    test: "[ ! -f /etc/filebeat ]"
     cwd: "/etc/filebeat"
   200_command:
     command: "curl -L -O https://artifacts.elastic.co/downloads/beats/filebeat/filebeat-5.6.5-x86_64.rpm"
@@ -63,7 +62,7 @@ commands:
   400_command:
     command: "aws s3 cp s3://ebext-config/filebeat/filebeat.yml /etc/filebeat/"
     test: "[ ! -f /etc/filebeat/filebeat.yml ]"
-    cwd: "/etc/filebeat/filebeat.yml"
+    cwd: "/etc/filebeat/"
   500_command:
     command: "/etc/init.d/filebeat start"
 EOF
