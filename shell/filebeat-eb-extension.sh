@@ -61,7 +61,6 @@ commands:
   400_command:
     command: "aws s3 cp s3://ebext-config/filebeat/filebeat.yml /etc/filebeat/"
     test: "[ ! -f /etc/filebeat/filebeat.yml ]"
-    cwd: "/etc/filebeat/"
   500_command:
     command: "/etc/init.d/filebeat start"
 EOF
