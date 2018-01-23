@@ -51,16 +51,20 @@ commands:
   100_command:
     command: "rm -rf /etc/filebeat"
   200_command:
+    command: "aws s3 cp s3://ebext-config/filebeat/filebeat.yml /tmp"
+    test: "[ ! -f /tmp/filebeat.yml ]"
+    cwd: "/tmp"
+  300_command:
     command: "curl -L -O https://artifacts.elastic.co/downloads/beats/filebeat/filebeat-5.6.5-x86_64.rpm"
     test: "[ ! -f filebeat-${FB_VERSION}-x86_64.rpm ]"
     cwd: "/home/ec2-user"
-  300_command:
-    command: "rpm -ivh --replacepkgs --excludepath /etc/filebeat/ filebeat-${FB_VERSION}-x86_64.rpm && touch /tmp/installed-filebeats"
+  400_command:
+    command: "rpm -ivh --replacepkgs --replacefiles --excludepath /etc/filebeat/ filebeat-${FB_VERSION}-x86_64.rpm && touch /tmp/installed-filebeats"
     test: "[ ! -f /tmp/installed-filebeats ]"
     cwd: "/home/ec2-user"
-  400_command:
-    command: "aws s3 cp s3://ebext-config/filebeat/filebeat.yml /etc/filebeat/"
-    test: "[ ! -f /etc/filebeat/filebeat.yml ]"
   500_command:
+    command: "mv /tmp/filebeat.yml /etc/filebeat/filebeat.yml"
+    test: "[ ! -f /etc/filebeat/filebeat.yml ]"
+  600_command:
     command: "/etc/init.d/filebeat start"
 EOF
