@@ -63,7 +63,7 @@ commands:
     test: "[ ! -f /tmp/installed-filebeats ]"
     cwd: "/home/ec2-user"
   500_command:
-    command: "mkdir /etc/filebeat
+    command: "mkdir /etc/filebeat"
     test: "[ ! -f /etc/filebeat/ ]"
     cwd: "/home/ec2-user"
   600_command:
