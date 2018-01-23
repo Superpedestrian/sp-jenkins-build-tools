@@ -1,5 +1,9 @@
 # Changes
 
+## 0.12.2
+
+- Changed filebeat config to pull filebeat.yml from S3
+
 ## 0.12.1
 
 - Fixed filename of filebeat config
