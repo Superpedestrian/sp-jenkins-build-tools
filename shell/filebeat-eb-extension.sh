@@ -67,7 +67,7 @@ commands:
     test: "[ ! -f /etc/filebeat/ ]"
     cwd: "/home/ec2-user"
   600_command:
-    command: "mv /tmp/filebeat.yml /etc/filebeat/filebeat.yml && chmod 0640 /etc/filebeat/filebeat.yml && chown -r root:root /etc/filebeat/"
+    command: "mv /tmp/filebeat.yml /etc/filebeat/filebeat.yml && chmod 0640 /etc/filebeat/filebeat.yml && chown -R root:root /etc/filebeat/"
     test: "[ ! -f /etc/filebeat/filebeat.yml ]"
   700_command:
     command: "/etc/init.d/filebeat start"
