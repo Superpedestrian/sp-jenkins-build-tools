@@ -59,7 +59,7 @@ commands:
     test: "[ ! -f filebeat-${FB_VERSION}-x86_64.rpm ]"
     cwd: "/home/ec2-user"
   400_command:
-    command: "rpm -ivh --replacepkgs --replacefiles --excludepath /etc/filebeat/ filebeat-${FB_VERSION}-x86_64.rpm && touch /tmp/installed-filebeats"
+    command: "rpm -Fvh --replacepkgs --replacefiles --excludepath /etc/filebeat/ filebeat-${FB_VERSION}-x86_64.rpm && touch /tmp/installed-filebeats"
     test: "[ ! -f /tmp/installed-filebeats ]"
     cwd: "/home/ec2-user"
   500_command:
