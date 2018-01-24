@@ -47,6 +47,9 @@ $(indent_cert "$LOGSTASH_CLIENT_CERT")
       group: root
       content: |
 $(indent_cert "$LOGSTASH_CLIENT_KEY")
+packages:
+  rpm:
+    filebeat: https://artifacts.elastic.co/downloads/beats/filebeat/filebeat-5.6.5-x86_64.rpm
 commands:
   100_command:
     command: "rm -rf /etc/filebeat"
@@ -54,21 +57,13 @@ commands:
     command: "aws s3 cp s3://ebext-config/filebeat/filebeat.yml /tmp"
     test: "[ ! -f /tmp/filebeat.yml ]"
     cwd: "/tmp"
-  300_command:
-    command: "curl -L -O https://artifacts.elastic.co/downloads/beats/filebeat/filebeat-5.6.5-x86_64.rpm"
-    test: "[ ! -f filebeat-${FB_VERSION}-x86_64.rpm ]"
-    cwd: "/home/ec2-user"
   400_command:
-    command: "rpm -Fvh --replacepkgs --replacefiles --excludepath /etc/filebeat/ filebeat-${FB_VERSION}-x86_64.rpm && touch /tmp/installed-filebeats"
-    test: "[ ! -f /tmp/installed-filebeats ]"
-    cwd: "/home/ec2-user"
-  500_command:
     command: "mkdir /etc/filebeat"
     test: "[ ! -f /etc/filebeat/ ]"
     cwd: "/home/ec2-user"
-  600_command:
-    command: "mv /tmp/filebeat.yml /etc/filebeat/filebeat.yml && chmod 0640 /etc/filebeat/filebeat.yml && chown -R root:root /etc/filebeat/"
+  500_command:
+    command: "mv /tmp/filebeat.yml /etc/filebeat/filebeat.yml"
     test: "[ ! -f /etc/filebeat/filebeat.yml ]"
-  700_command:
+  600_command:
     command: "/etc/init.d/filebeat start"
 EOF
