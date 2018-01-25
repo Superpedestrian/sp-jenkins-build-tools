@@ -1,5 +1,9 @@
 # Changes
 
+## 0.12.3
+
+- Simplify filebeat config and get it deployable
+
 ## 0.12.2
 
 - Changed filebeat config to pull filebeat.yml from S3
