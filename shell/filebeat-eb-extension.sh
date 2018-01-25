@@ -11,7 +11,7 @@
 # FB_EXTENSION_PATH: Path to filebeat extension configuration to generate
 # FB_VERSION: Version number of filebeat to install
 
-LOGSTASH_DOC_TYPE=${LOGSTASH_DOC_TYPE:-elasticbeanstalk}
+LOGSTASH_DOC_TYPE=${LOGSTASH_DOC_TYPE:elasticbeanstalk}
 FB_EXTENSION_PATH=${FB_EXTENSION_PATH:-.ebextensions/100-filebeat.config}
 FB_VERSION=${FB_VERSION:-5.6.5}
 
@@ -66,4 +66,6 @@ commands:
     test: "[ ! -f /etc/filebeat/filebeat.yml ]"
   600_command:
     command: "/etc/init.d/filebeat start"
+    env: 
+      LOGSTASH_DOC_TYPE:"$LOGSTASH_DOC_TYPE"
 EOF
