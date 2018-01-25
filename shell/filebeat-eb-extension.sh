@@ -65,7 +65,7 @@ commands:
     command: "mv /tmp/filebeat.yml /etc/filebeat/filebeat.yml"
     test: "[ ! -f /etc/filebeat/filebeat.yml ]"
   600_command:
-    command: "export LOGSTASH_DOC_TYPE="$LOGSTASH_DOC_TYPE""
+    command: "export LOGSTASH_DOC_TYPE='$LOGSTASH_DOC_TYPE'"
   700_command:
     command: "/etc/init.d/filebeat start"
 EOF
