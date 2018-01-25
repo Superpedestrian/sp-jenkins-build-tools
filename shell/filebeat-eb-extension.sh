@@ -67,5 +67,5 @@ commands:
   600_command:
     command: "/etc/init.d/filebeat start"
     env: 
-      LOGSTASH_DOC_TYPE:"$LOGSTASH_DOC_TYPE"
+      LOGSTASH_DOC_TYPE: "$LOGSTASH_DOC_TYPE"
 EOF
