@@ -57,6 +57,8 @@ commands:
     command: "aws s3 cp s3://ebext-config/filebeat/filebeat.yml /tmp"
     test: "[ ! -f /tmp/filebeat.yml ]"
     cwd: "/tmp"
+  300_command: 
+    command: "sed -i 's/LOGSTASH_DOC_TYPE/$LOGSTASH_DOC_TYPE/g' /tmp/filebeat.yml"
   400_command:
     command: "mkdir /etc/filebeat"
     test: "[ ! -f /etc/filebeat/ ]"
@@ -65,7 +67,5 @@ commands:
     command: "mv /tmp/filebeat.yml /etc/filebeat/filebeat.yml"
     test: "[ ! -f /etc/filebeat/filebeat.yml ]"
   600_command:
-    command: "export LOGSTASH_DOC_TYPE='$LOGSTASH_DOC_TYPE'"
-  700_command:
     command: "/etc/init.d/filebeat start"
 EOF
