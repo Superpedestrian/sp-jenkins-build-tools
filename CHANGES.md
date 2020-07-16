@@ -1,5 +1,9 @@
 # Changes
 
+## 0.13.1
+
+- Add python 3.5 exe to eb_install
+
 ## 0.13.0
 
 - Attempt to fix eb_install
