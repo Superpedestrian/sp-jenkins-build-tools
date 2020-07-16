@@ -1,5 +1,9 @@
 # Changes
 
+## 0.13.0
+
+- Attempt to fix eb_install
+
 ## 0.12.3
 
 - Simplify filebeat config and get it deployable
