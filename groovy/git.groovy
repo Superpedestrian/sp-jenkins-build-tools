@@ -56,6 +56,7 @@ void gitTag(
     }
     cmd "git config --local credential.helper \"store --file=\\\"$credPath\\\"\"", useBat
     cmd 'git config -l', useBat
+    cmd 'git pull --tags', useBat
     cmd 'git push --tags', useBat
   }
 }
