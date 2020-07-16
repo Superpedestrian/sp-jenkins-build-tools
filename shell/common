@@ -35,7 +35,7 @@ function install_eb() {
 
     # This causes error for an unknown reason
     set +e
-    mktmpenv --no-setuptools -n
+    mktmpenv -p /usr/bin/python3.5 -n
     set -e
 
     pip install awsebcli
